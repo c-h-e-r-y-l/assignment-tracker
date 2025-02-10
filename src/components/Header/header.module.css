@@ -48,5 +48,7 @@
 }
 
 .newAssignmentForm button:disabled {
-  background: red;
+    background: #c6c7d8;
+    cursor: default;
+    opacity: 70%;
 }
