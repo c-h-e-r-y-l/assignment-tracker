@@ -1,24 +1,44 @@
 import { Assignment } from "../Assignment";
 import styles from "./assignments.module.css";
+import { AssignmentDetails } from "../../types";
 
-export function Assignments() {
-  return (
-    <section className={styles.assignments}>
-      <header className={styles.header}>
-        <div>
-          <p>Created Assignments</p>
-          <span>1</span>
-        </div>
+type AssignmentsProps = {
+    assignments: AssignmentDetails[];
+    setAssignmentList: React.Dispatch<React.SetStateAction<AssignmentDetails[]>>;
+}
 
-        <div>
-          <p className={styles.textPurple}>Completed Assignments</p>
-          <span>1 of 1</span>
-        </div>
-      </header>
+export function Assignments({ assignments, setAssignmentList }: AssignmentsProps) {
+    const numOfAssignments = assignments.length;
 
-      <div className={styles.list}>
-        <Assignment />
-      </div>
-    </section>
-  );
+    function completeCount(assignments: AssignmentDetails[]): number {
+        return assignments.filter(a => a.completed).length;
+    }
+
+    return (
+        <section className={styles.assignments}>
+            <header className={styles.header}>
+                <div>
+                    <p>Created Assignments</p>
+                    <span>{numOfAssignments}</span>
+                </div>
+
+                <div>
+                    <p className={styles.textPurple}>Completed Assignments</p>
+                    <span>{completeCount(assignments)} of {numOfAssignments}</span>
+                </div>
+            </header>
+
+            <div className={styles.list}>
+                {assignments.map((assignment) => (
+                    <Assignment
+                        key={assignment.id}
+                        data={assignment.text}
+                        id={assignment.id}
+                        completed={assignment.completed}
+                        setAssignmentList={setAssignmentList}
+                    />
+                ))}
+            </div>
+        </section>
+    );
 }
